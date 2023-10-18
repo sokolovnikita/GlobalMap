@@ -28,10 +28,19 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""id"": ""a0b9fd3e-f8cf-4acb-95b7-3a5745ed8c49"",
             ""actions"": [
                 {
-                    ""name"": ""Choose"",
+                    ""name"": ""Select"",
                     ""type"": ""Value"",
                     ""id"": ""86976cab-327d-47dd-92f7-e833d2bed485"",
                     ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Hover"",
+                    ""type"": ""Value"",
+                    ""id"": ""9b35f24d-a1d3-45af-b975-45dec03f8b4c"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -45,7 +54,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Choose"",
+                    ""action"": ""Select"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -56,7 +65,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Choose"",
+                    ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -67,7 +76,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Choose"",
+                    ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -78,7 +87,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Choose"",
+                    ""action"": ""Select"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -89,7 +98,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Choose"",
+                    ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -100,9 +109,31 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Choose"",
+                    ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1c5865a8-1429-4edb-b8c2-8d74643bd46e"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hover"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""773b4702-1be4-4b2b-a177-d2cdd3e957e8"",
+                    ""path"": ""<Touchscreen>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hover"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -111,7 +142,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
 }");
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-        m_Gameplay_Choose = m_Gameplay.FindAction("Choose", throwIfNotFound: true);
+        m_Gameplay_Select = m_Gameplay.FindAction("Select", throwIfNotFound: true);
+        m_Gameplay_Hover = m_Gameplay.FindAction("Hover", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -173,12 +205,14 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     // Gameplay
     private readonly InputActionMap m_Gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
-    private readonly InputAction m_Gameplay_Choose;
+    private readonly InputAction m_Gameplay_Select;
+    private readonly InputAction m_Gameplay_Hover;
     public struct GameplayActions
     {
         private @InputActions m_Wrapper;
         public GameplayActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Choose => m_Wrapper.m_Gameplay_Choose;
+        public InputAction @Select => m_Wrapper.m_Gameplay_Select;
+        public InputAction @Hover => m_Wrapper.m_Gameplay_Hover;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -188,16 +222,22 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
-            @Choose.started += instance.OnChoose;
-            @Choose.performed += instance.OnChoose;
-            @Choose.canceled += instance.OnChoose;
+            @Select.started += instance.OnSelect;
+            @Select.performed += instance.OnSelect;
+            @Select.canceled += instance.OnSelect;
+            @Hover.started += instance.OnHover;
+            @Hover.performed += instance.OnHover;
+            @Hover.canceled += instance.OnHover;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
         {
-            @Choose.started -= instance.OnChoose;
-            @Choose.performed -= instance.OnChoose;
-            @Choose.canceled -= instance.OnChoose;
+            @Select.started -= instance.OnSelect;
+            @Select.performed -= instance.OnSelect;
+            @Select.canceled -= instance.OnSelect;
+            @Hover.started -= instance.OnHover;
+            @Hover.performed -= instance.OnHover;
+            @Hover.canceled -= instance.OnHover;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -217,6 +257,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     public GameplayActions @Gameplay => new GameplayActions(this);
     public interface IGameplayActions
     {
-        void OnChoose(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
+        void OnHover(InputAction.CallbackContext context);
     }
 }
