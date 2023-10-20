@@ -2,16 +2,10 @@ using UnityEngine;
 
 public abstract class MissionBase : MonoBehaviour
 {
-    [SerializeField] protected IChooseable _chooseStrategy;
     [SerializeField] protected GameObject _hoverFrame;
+    [SerializeField] protected Window _window;
 
     private bool _isHovered = false;
-   
-
-    private void Start()
-    {
-        InitStrategies();
-    }
 
     public bool IsHovered
     {
@@ -24,12 +18,7 @@ public abstract class MissionBase : MonoBehaviour
             if (_isHovered == false)
                 DisableFrame();
         }
-    }
-
-    public void Select()
-    {
-        _chooseStrategy.Choose();
-    }
+    }  
 
     public void EnableFrame()
     {
@@ -41,5 +30,5 @@ public abstract class MissionBase : MonoBehaviour
         _hoverFrame.SetActive(false);
     }
 
-    protected abstract void InitStrategies();
+    public abstract void ShowStartWindow();
 }
