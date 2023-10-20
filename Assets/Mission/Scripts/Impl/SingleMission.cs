@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class SingleMission : MissionBase
 {
-    protected override void InitStrategies()
+    [SerializeField] private MissionConfig _config;
+
+    public override void ShowStartWindow()
     {
-        _chooseStrategy = new GeneralChooseStrategy();
+        _window.FillSingle(_config);
     }
 }

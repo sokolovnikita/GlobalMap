@@ -33,7 +33,7 @@ public class SelectInput : MonoBehaviour
         Ray ray = DrawRay();
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
-            hit.transform.gameObject.GetComponent<MissionBase>()?.Select();    
+            hit.transform.gameObject.GetComponent<MissionBase>()?.ShowStartWindow();    
     }
 
     private void Hover(InputAction.CallbackContext obj)
