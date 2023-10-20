@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public abstract class MissionBase : MonoBehaviour
 {
@@ -6,6 +7,12 @@ public abstract class MissionBase : MonoBehaviour
     [SerializeField] protected Window _window;
 
     private bool _isHovered = false;
+
+    [Inject]
+    private void Construct(Window window)
+    {
+        _window = window;
+    }
 
     public bool IsHovered
     {
