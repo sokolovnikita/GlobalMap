@@ -466,7 +466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hoverFrame: {fileID: 2793370127766896322}
-  _window: {fileID: 0}
+  _startState: 3
   _firstMission: {fileID: 11400000, guid: 18831f27446fbf344b0d3f58799c9fca, type: 2}
   _secondMission: {fileID: 11400000, guid: 18831f27446fbf344b0d3f58799c9fca, type: 2}
 --- !u!1 &2597470690700359370
@@ -1135,7 +1135,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6228467551698327626}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.008, y: 0, z: 0}
+  m_LocalPosition: {x: 0.01, y: 0, z: 0}
   m_LocalScale: {x: 0.11, y: 0.155, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

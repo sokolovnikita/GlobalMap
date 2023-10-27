@@ -1,12 +1,14 @@
 using UnityEngine;
 using Zenject;
 
-public abstract class MissionBase : MonoBehaviour
+public abstract class MissionBase : MonoBehaviour, IMission
 {
     [SerializeField] protected GameObject _hoverFrame;
-    [SerializeField] protected Window _window;
+    [SerializeField] protected MissionStateMachine.MissionState _startState;
 
-    private bool _isHovered = false;
+    protected Window _window;
+
+    private MissionStateMachine _stateMachine;
 
     [Inject]
     private void Construct(Window window)
@@ -14,25 +16,45 @@ public abstract class MissionBase : MonoBehaviour
         _window = window;
     }
 
-    public bool IsHovered
+    private void Start()
     {
-        get { return _isHovered; }
-        set 
-        { 
-            _isHovered = value;
-            if (_isHovered == true)
-                EnableFrame();
-            if (_isHovered == false)
-                DisableFrame();
-        }
-    }  
+        _stateMachine = new MissionStateMachine(this, _startState);
+    }
 
-    public void EnableFrame()
+    public void Hover(bool isHovered)
+    {
+        _stateMachine.CurrentState.Hover(isHovered);
+    }
+
+    public void ShowWindow()
+    {
+        _stateMachine.CurrentState.ShowWindow();
+    }
+
+    public void HoverFrame(bool isHovered)
+    {
+        if (isHovered == true)
+            EnableFrame();
+        if (isHovered == false)
+            DisableFrame();
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void EnableFrame()
     {
         _hoverFrame.SetActive(true);
     }
 
-    public void DisableFrame()
+    private void DisableFrame()
     {
         _hoverFrame.SetActive(false);
     }
