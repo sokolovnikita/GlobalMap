@@ -7,7 +7,7 @@ public class SelectInput : MonoBehaviour
     [SerializeField] private Camera _camera;
 
     private InputActions _inputActions;
-    private MissionBase _mission;
+    private IMission _mission;
 
     private void Awake()
     {
@@ -33,7 +33,7 @@ public class SelectInput : MonoBehaviour
         Ray ray = DrawRay();
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
-            hit.transform.gameObject.GetComponent<MissionBase>()?.ShowStartWindow();    
+            hit.transform.gameObject.GetComponent<IMission>()?.ShowWindow();    
     }
 
     private void Hover(InputAction.CallbackContext obj)
@@ -42,12 +42,12 @@ public class SelectInput : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            _mission = hit.transform?.gameObject.GetComponent<MissionBase>();
-            _mission?.EnableFrame();
+            _mission = hit.transform?.gameObject.GetComponent<IMission>();
+            _mission?.Hover(true);
         }
         else
         {
-            _mission?.DisableFrame();
+            _mission?.Hover(false);
         }
         
     }
